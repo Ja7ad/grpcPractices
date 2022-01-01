@@ -1,0 +1,14 @@
+syntax = "proto3";
+option go_package = "github.com/Ja7ad/greeting";
+
+message GreetRequest {
+  string name = 1;
+}
+
+message GreetResponse {
+  string message = 1;
+}
+
+service Greeter {
+  rpc SayHello(GreetRequest) returns(GreetResponse) {}
+}
