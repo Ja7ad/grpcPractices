@@ -3,19 +3,19 @@ package main
 import (
 	"context"
 	"flag"
-	pb "github.com/Ja7ad/greeting/protos"
+	"github.com/Ja7ad/grpcPractices/pb"
 	"google.golang.org/grpc"
+	"io"
 	"log"
-	"time"
 )
 
 const (
-	defaultName = "Javad" // if flag name is empty set default name
+	defaultID = 1
 )
 
 var (
 	address = flag.String("address", "localhost:9911", "gRPC server address and port")
-	name    = flag.String("name", defaultName, "your name for greeting")
+	id      = flag.Int("id", defaultID, "your account id for get balance")
 )
 
 // rpcConnector is object grpc client
@@ -35,6 +35,7 @@ func (r *rpcConnector) newGRPC(addr string) (*rpcConnector, error) {
 
 func main() {
 	flag.Parse()
+	log.Println("Starting client...")
 
 	// create new object for create new rpc client
 	client := &rpcConnector{}
@@ -46,17 +47,28 @@ func main() {
 	// close grpc client after finish
 	defer con.gr.Close()
 
-	// create new greeter object for client
-	c := pb.NewGreeterClient(con.gr)
+	c := pb.NewBalanceServiceClient(con.gr)
+	fetchBalance(c)
+}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
+func fetchBalance(c pb.BalanceServiceClient) {
+	req := &pb.BalanceReq{Id: uint32(*id)}
 
-	// send request to server for get greeting
-	r, err := c.SayHello(ctx, &pb.GreetRequest{Name: *name})
+	stream, err := c.GetBalance(context.Background(), req)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	log.Printf("Greeting Message is : %s", r.GetMessage())
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Printf("Balance Acccount id %v with name %v is %v (%v)", res.Id, res.Name, res.Balance, res.Type)
+	}
 }
