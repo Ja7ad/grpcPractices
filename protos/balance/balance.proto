@@ -1,0 +1,17 @@
+syntax = "proto3";
+option go_package = "github.com/Ja7ad/grpcPractices";
+
+message balanceReq {
+  uint32 id = 1;
+}
+
+message balanceResp {
+  uint32 id = 1;
+  string name = 2;
+  string type = 3;
+  double balance = 4;
+}
+
+service BalanceService {
+  rpc GetBalance(balanceReq) returns(stream balanceResp) {}
+}

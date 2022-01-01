@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Javad",
+    "balance": [
+      {
+        "type": "debit",
+        "fund": 12.5
+      },
+      {
+        "type": "debit",
+        "fund": 15.0
+      },
+      {
+        "type": "card",
+        "fund": 17.4
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Saeed",
+    "balance": [
+      {
+        "type": "debit",
+        "fund": 16.0
+      },
+      {
+        "type": "card",
+        "fund": 22.4
+      },
+      {
+        "type": "debit",
+        "fund": 28.9
+      }
+    ]
+  }
+]
