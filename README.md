@@ -1,5 +1,7 @@
 # Account Balance Service gRPC 
 
+![balance](img/balance.png)
+
 Account balance service is server-side stream get balance account by id
 
 ## Build
