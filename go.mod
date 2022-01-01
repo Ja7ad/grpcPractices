@@ -1,4 +1,4 @@
-module github.com/Ja7ad/greeting
+module github.com/Ja7ad/grpcPractices
 
 go 1.17
 
